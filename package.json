@@ -1,0 +1,32 @@
+{
+  "name": "nevarmarket",
+  "version": "1.0.0",
+  "description": "Market App",
+  "main": "app.js",
+  "scripts": {
+    "test": "node app"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wolfan00/NeVarMarket.git"
+  },
+  "keywords": [
+    "market",
+    "product"
+  ],
+  "author": "Wolfan00",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wolfan00/NeVarMarket/issues"
+  },
+  "homepage": "https://github.com/wolfan00/NeVarMarket#readme",
+  "devDependencies": {
+    "nodemon": "^3.1.9",
+    "prettier": "^3.5.3"
+  },
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "mysql2": "^3.12.0"
+  }
+}
