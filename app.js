@@ -12,13 +12,21 @@ app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
 //routes
 const routes = {
-    products: `/products`,
-    cart:`/cart`
-}
+  home: `/`, //anasayfa
+  products: `/products`, //ürün detay
+  cart: `/cart`, //sepet
+  checkout: `/checkout`, //ödeme
+};
 
-
+app.get(routes.home, (req, res) => {
+  res.render('products', { title: 'Ürünler' });
+});
+app.get(routes.cart, (req, res) => {
+  res.render('cart', { title: 'Ürünler' });
+});
 app.listen(port, () => {
-    console.log(`server ${port} portunda başlatıldı.`);
+  console.log(`server ${port} portunda başlatıldı.`);
 });
