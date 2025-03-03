@@ -1,32 +1,25 @@
 const express = require('express');
-const ejs = require('ejs');
-const path = require('path');
-
 const app = express();
 const port = 3000;
-
-//template engine
-app.set('view engine', 'ejs');
-
-//middle wares
-app.use(express.static('public'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-//routes
-const routes = {
-  home: `/`, //anasayfa
-  products: `/products`, //ürün detay
-  cart: `/cart`, //sepet
-  checkout: `/checkout`, //ödeme
-};
-
-app.get(routes.home, (req, res) => {
-  res.render('products', { title: 'Ürünler' });
+//Routes
+//ürünleri getirme
+app.get(`/api/products`, (req, res) => {
+    res.status(200).send();
 });
-app.get(routes.cart, (req, res) => {
-  res.render('cart', { title: 'Ürünler' });
+//ürün ekleme
+app.post(`/api/products`, (req, res) => {
+    res.status(201).send();
 });
+//ürün güncelleme
+app.put(`/api/products/:id`, (req, res) => {
+    res.status(200).send();
+});
+//ürün silme
+app.delete(`/api/products/:id`, (req, res) => {
+    res.status(204).send();
+});
+
+
 app.listen(port, () => {
-  console.log(`server ${port} portunda başlatıldı.`);
-});
+  console.log(`App listening on port ${port}`);
+})
