@@ -1,24 +1,15 @@
 const express = require('express');
 const app = express();
 const port = 3000;
-//Routes
-//ürünleri getirme
-app.get(`/api/products`, (req, res) => {
-    res.status(200).send();
-});
-//ürün ekleme
-app.post(`/api/products`, (req, res) => {
-    res.status(201).send();
-});
-//ürün güncelleme
-app.put(`/api/products/:id`, (req, res) => {
-    res.status(200).send();
-});
-//ürün silme
-app.delete(`/api/products/:id`, (req, res) => {
-    res.status(204).send();
-});
-
+//ROUTES
+const orders = require('./routes/orders');
+const cart = require('./routes/cart');
+const users = require('./routes/users');
+const products = require('./routes/products');
+app.use('/api/orders', orders);
+app.use('/api/cart', cart);
+app.use('/api/users', users);
+app.use('/api/products', products);
 
 app.listen(port, () => {
   console.log(`App listening on port ${port}`);
