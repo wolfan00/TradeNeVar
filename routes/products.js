@@ -2,23 +2,23 @@ const router = require('express').Router();
 
 
 //ürünleri getirme
-router.get(`/api/products`, (req, res) => {
+router.get(`/`, (req, res) => {
     res.status(200).send();
 });
 //belirli bir ürünü getirme
-router.get(`/api/products/:id`, (req, res) => {
+router.get(`/:id`, (req, res) => {
     res.status(200).send();
 });
 //ürün ekleme
-router.post(`/api/products`, (req, res) => {
+router.post(`/`, (req, res) => {
     res.status(201).send();
 });
 //ürün güncelleme
-router.put(`/api/products/:id`, (req, res) => {
+router.put(`/:id`, (req, res) => {
     res.status(200).send();
 });
 //ürün silme
-router.delete(`/api/products/:id`, (req, res) => {
+router.delete(`/:id`, (req, res) => {
     res.status(204).send();
 });
 

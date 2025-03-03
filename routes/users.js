@@ -1,23 +1,23 @@
 const router = require('express').Router();
 
 //kullanıcıları getirme
-router.get(`/api/users`, (req, res) => {
+router.get(`/`, (req, res) => {
     res.status(200).send();
 });
 //belirli bir kullanıcıyı getirme
-router.get(`/api/users/:id`, (req, res) => {
+router.get(`/:id`, (req, res) => {
     res.status(200).send();
 });
 //yeni kullanıcı oluşturma
-router.post(`/api/users`, (req, res) => {
+router.post(`/`, (req, res) => {
     res.status(201).send();
 });
 //kullanıcı güncelleme
-router.put(`/api/users/:id`, (req, res) => {
+router.put(`/:id`, (req, res) => {
     res.status(200).send();
 });
 //kullanıcı silme
-router.delete(`/api/users/:id`, (req, res) => {
+router.delete(`/:id`, (req, res) => {
     res.status(204).send();
 });
 
