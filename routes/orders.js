@@ -1,8 +1,8 @@
 const router = require('express').Router();
-const Order = require('../models/Order');
-
+const Order = require('../models/Order.js');
+const {auth,authAdmin} = require('../middleware/auth');
 // Tüm siparişleri getirme
-router.get('/', async (req, res) => {
+router.get('/', authAdmin,async (req, res) => {
   try {
     const orders = await Order.findAll();
     res.status(200).json(orders);
@@ -12,7 +12,7 @@ router.get('/', async (req, res) => {
 });
 
 // Belirli bir siparişi getirme
-router.get('/:id', async (req, res) => {
+router.get('/:id',auth, async (req, res) => {
   try {
     const order = await Order.findByPk(req.params.id);
     if (!order) {
@@ -25,7 +25,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // Yeni sipariş ekleme
-router.post('/', async (req, res) => {
+router.post('/',auth, async (req, res) => {
   try {
     const { user_id, total_price, status } = req.body;
     const newOrder = await Order.create({ user_id, total_price, status });
@@ -36,7 +36,7 @@ router.post('/', async (req, res) => {
 });
 
 // Sipariş güncelleme
-router.put('/:id', async (req, res) => {
+router.put('/:id',auth, async (req, res) => {
   try {
     const order = await Order.findByPk(req.params.id);
     if (!order) {
@@ -50,7 +50,7 @@ router.put('/:id', async (req, res) => {
 });
 
 // ✅ Sipariş silme
-router.delete('/:id', async (req, res) => {
+router.delete('/:id',authAdmin,async (req, res) => {
   try {
     const order = await Order.findByPk(req.params.id);
     if (!order) {

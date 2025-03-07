@@ -1,8 +1,8 @@
 const router = require('express').Router();
-const OrderItem = require('../models/OrderItem');
-
+const OrderItem = require('../models/OrderItem.js');
+const {auth,authAdmin} = require('../middleware/auth');
 //Tüm sipariş ürünlerini getirme
-router.get('/', async (req, res) => {
+router.get('/',authAdmin, async (req, res) => {
   try {
     const orderItems = await OrderItem.findAll();
     res.status(200).json(orderItems);
@@ -12,8 +12,9 @@ router.get('/', async (req, res) => {
 });
 
 //Belirli bir sipariş ürününü getirme
-router.get('/:id', async (req, res) => {
+router.get('/:id', auth,async (req, res) => {
   try {
+    if(req.user.role !== 'admin'){}
     const orderItem = await OrderItem.findByPk(req.params.id);
     if (!orderItem) {
       return res.status(404).json({ message: 'OrderItem not found' });
@@ -25,7 +26,7 @@ router.get('/:id', async (req, res) => {
 });
 
 //Yeni sipariş ürünü ekleme
-router.post('/', async (req, res) => {
+router.post('/', auth,async (req, res) => {
   try {
     const { order_id, product_id, quantity, price } = req.body;
     const newOrderItem = await OrderItem.create({
@@ -41,7 +42,7 @@ router.post('/', async (req, res) => {
 });
 
 //Sipariş ürününü güncelleme
-router.put('/:id', async (req, res) => {
+router.put('/:id',auth, async (req, res) => {
   try {
     const orderItem = await OrderItem.findByPk(req.params.id);
     if (!orderItem) {
@@ -55,7 +56,7 @@ router.put('/:id', async (req, res) => {
 });
 
 //Sipariş ürününü silme
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', auth,async (req, res) => {
   try {
     const orderItem = await OrderItem.findByPk(req.params.id);
     if (!orderItem) {

@@ -1,8 +1,8 @@
 const router = require('express').Router();
 const Product = require('../models/Product');
-
+const {auth,authAdmin} = require('../middleware/auth');
 // Tüm ürünleri getirme
-router.get('/', async (req, res) => {
+router.get('/',auth, async (req, res) => {
   try {
     const products = await Product.findAll();
     res.status(200).json(products);
@@ -12,7 +12,7 @@ router.get('/', async (req, res) => {
 });
 
 // Belirli bir ürünü getirme
-router.get('/:id', async (req, res) => {
+router.get('/:id',auth, async (req, res) => {
   try {
     const product = await Product.findByPk(req.params.id);
     if (!product) {
@@ -25,7 +25,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // Yeni ürün ekleme
-router.post('/', async (req, res) => {
+router.post('/',auth, async (req, res) => {
   try {
     const { name, description, price, stock, category_id } = req.body;
     const newProduct = await Product.create({
@@ -42,7 +42,7 @@ router.post('/', async (req, res) => {
 });
 
 // Ürün güncelleme
-router.put('/:id', async (req, res) => {
+router.put('/:id', auth,async (req, res) => {
   try {
     const product = await Product.findByPk(req.params.id);
     if (!product) {
@@ -56,7 +56,7 @@ router.put('/:id', async (req, res) => {
 });
 
 // Ürün silme
-router.delete('/:id', async (req, res) => {
+router.delete('/:id',auth,async (req, res) => {
   try {
     const product = await Product.findByPk(req.params.id);
     if (!product) {

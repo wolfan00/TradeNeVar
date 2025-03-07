@@ -1,9 +1,9 @@
 // routes/users.js
-const express = require('express').Router();
+const router = require('express').Router();
 const User = require('../models/User');
-
+const {auth,authAdmin} = require('../middleware/auth');
 // Kullanıcıları getirme
-router.get('/', async (req, res) => {
+router.get('/',auth, async (req, res) => {
   try {
     const users = await User.findAll(); // Bütün kullanıcıları getir
     res.status(200).json(users); // JSON formatında kullanıcıları döndür
@@ -13,7 +13,7 @@ router.get('/', async (req, res) => {
 });
 
 // Belirli bir kullanıcıyı getirme
-router.get('/:id', async (req, res) => {
+router.get('/:id',auth, async (req, res) => {
   try {
     const user = await User.findByPk(req.params.id); // ID'ye göre kullanıcıyı getir
     if (!user) {
@@ -26,7 +26,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // Yeni kullanıcı oluşturma
-router.post('/', async (req, res) => {
+router.post('/', auth,async (req, res) => {
   const {
     first_name,
     last_name,
@@ -56,7 +56,7 @@ router.post('/', async (req, res) => {
 });
 
 // Kullanıcı güncelleme
-router.put('/:id', async (req, res) => {
+router.put('/:id',auth, async (req, res) => {
   const { first_name, lastname, age, gender, email, password, phone, address } =
     req.body;
 
@@ -84,7 +84,7 @@ router.put('/:id', async (req, res) => {
 });
 
 // Kullanıcı silme
-router.delete('/:id', async (req, res) => {
+router.delete('/:id',auth, async (req, res) => {
   try {
     const user = await User.findByPk(req.params.id); // ID'ye göre kullanıcıyı bul
     if (!user) {
