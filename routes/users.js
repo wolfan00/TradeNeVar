@@ -1,31 +1,29 @@
-// routes/users.js
+
 const router = require('express').Router();
 const User = require('../models/User');
 const {auth,authAdmin} = require('../middleware/auth');
-// Kullanıcıları getirme
+
 router.get('/',auth, async (req, res) => {
   try {
-    const users = await User.findAll(); // Bütün kullanıcıları getir
-    res.status(200).json(users); // JSON formatında kullanıcıları döndür
+    const users = await User.findAll();
+    res.status(200).json(users);
   } catch (error) {
     res.status(500).json({ message: 'Server error' });
   }
 });
 
-// Belirli bir kullanıcıyı getirme
 router.get('/:id',auth, async (req, res) => {
   try {
-    const user = await User.findByPk(req.params.id); // ID'ye göre kullanıcıyı getir
+    const user = await User.findByPk(req.params.id);
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
-    res.status(200).json(user); // JSON formatında kullanıcıyı döndür
+    res.status(200).json(user);
   } catch (error) {
     res.status(500).json({ message: 'Server error' });
   }
 });
 
-// Yeni kullanıcı oluşturma
 router.post('/', auth,async (req, res) => {
   const {
     first_name,
@@ -49,19 +47,18 @@ router.post('/', auth,async (req, res) => {
       phone,
       address,
     });
-    res.status(201).json(newUser); // Yeni kullanıcıyı JSON formatında döndür
+    res.status(201).json(newUser);
   } catch (error) {
     res.status(400).json({ message: 'Invalid input' });
   }
 });
 
-// Kullanıcı güncelleme
 router.put('/:id',auth, async (req, res) => {
   const { first_name, lastname, age, gender, email, password, phone, address } =
     req.body;
 
   try {
-    const user = await User.findByPk(req.params.id); // ID'ye göre kullanıcıyı bul
+    const user = await User.findByPk(req.params.id);
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
@@ -75,24 +72,23 @@ router.put('/:id',auth, async (req, res) => {
     user.phone = phone || user.phone;
     user.address = address || user.address;
 
-    await user.save(); // Kullanıcıyı kaydet
+    await user.save();
 
-    res.status(200).json(user); // Güncellenmiş kullanıcıyı JSON formatında döndür
+    res.status(200).json(user);
   } catch (error) {
     res.status(400).json({ message: 'Invalid input' });
   }
 });
 
-// Kullanıcı silme
 router.delete('/:id',auth, async (req, res) => {
   try {
-    const user = await User.findByPk(req.params.id); // ID'ye göre kullanıcıyı bul
+    const user = await User.findByPk(req.params.id);
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    await user.destroy(); // Kullanıcıyı sil
-    res.status(204).send(); // Silme işlemi başarılı, yanıt dönme
+    await user.destroy();
+    res.status(204).send(); 
   } catch (error) {
     res.status(500).json({ message: 'Server error' });
   }

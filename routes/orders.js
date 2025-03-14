@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const Order = require('../models/Order.js');
 const {auth,authAdmin} = require('../middleware/auth');
-// Tüm siparişleri getirme
+
 router.get('/', authAdmin,async (req, res) => {
   try {
     const orders = await Order.findAll();
@@ -11,7 +11,6 @@ router.get('/', authAdmin,async (req, res) => {
   }
 });
 
-// Belirli bir siparişi getirme
 router.get('/:id',auth, async (req, res) => {
   try {
     const order = await Order.findByPk(req.params.id);
@@ -24,7 +23,6 @@ router.get('/:id',auth, async (req, res) => {
   }
 });
 
-// Yeni sipariş ekleme
 router.post('/',auth, async (req, res) => {
   try {
     const { user_id, total_price, status } = req.body;
@@ -35,7 +33,6 @@ router.post('/',auth, async (req, res) => {
   }
 });
 
-// Sipariş güncelleme
 router.put('/:id',auth, async (req, res) => {
   try {
     const order = await Order.findByPk(req.params.id);
@@ -49,7 +46,6 @@ router.put('/:id',auth, async (req, res) => {
   }
 });
 
-// ✅ Sipariş silme
 router.delete('/:id',authAdmin,async (req, res) => {
   try {
     const order = await Order.findByPk(req.params.id);

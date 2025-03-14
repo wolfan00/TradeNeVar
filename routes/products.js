@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const Product = require('../models/Product');
 const {auth,authAdmin} = require('../middleware/auth');
-// Tüm ürünleri getirme
+
 router.get('/',auth, async (req, res) => {
   try {
     const products = await Product.findAll();
@@ -11,7 +11,6 @@ router.get('/',auth, async (req, res) => {
   }
 });
 
-// Belirli bir ürünü getirme
 router.get('/:id',auth, async (req, res) => {
   try {
     const product = await Product.findByPk(req.params.id);
@@ -24,7 +23,6 @@ router.get('/:id',auth, async (req, res) => {
   }
 });
 
-// Yeni ürün ekleme
 router.post('/',auth, async (req, res) => {
   try {
     const { name, description, price, stock, category_id } = req.body;
@@ -41,7 +39,6 @@ router.post('/',auth, async (req, res) => {
   }
 });
 
-// Ürün güncelleme
 router.put('/:id', auth,async (req, res) => {
   try {
     const product = await Product.findByPk(req.params.id);
@@ -55,7 +52,6 @@ router.put('/:id', auth,async (req, res) => {
   }
 });
 
-// Ürün silme
 router.delete('/:id',auth,async (req, res) => {
   try {
     const product = await Product.findByPk(req.params.id);
