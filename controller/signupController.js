@@ -1,9 +1,8 @@
-const router = require('express').Router();
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-router.post('/', async (req, res) => {
+const signUpUser = async (req, res) => {
     try {
         const { first_name,last_name,email, password } = req.body;
 
@@ -24,6 +23,6 @@ router.post('/', async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: 'Server error' }+error);
     }
-});
+}
 
-module.exports = router;
+module.exports = {signUpUser};

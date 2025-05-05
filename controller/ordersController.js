@@ -1,17 +1,15 @@
-const router = require('express').Router();
 const Order = require('../models/Order.js');
-const {auth,authAdmin} = require('../middleware/auth');
 
-router.get('/',async (req, res) => {
+const getOrders = async (req, res) => {
   try {
     const orders = await Order.findAll();
     res.status(200).json(orders);
   } catch (error) {
     res.status(500).json({ message: 'Server error' });
   }
-});
+};
 
-router.get('/:id', async (req, res) => {
+const getOrderById = async (req, res) => {
   try {
     const order = await Order.findByPk(req.params.id);
     if (!order) {
@@ -21,9 +19,8 @@ router.get('/:id', async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: 'Server error' });
   }
-});
-
-router.post('/', async (req, res) => {
+};
+const createOrder = async (req, res) => {
   try {
     const { user_id, total_price, status } = req.body;
     const newOrder = await Order.create({ user_id, total_price, status });
@@ -31,9 +28,8 @@ router.post('/', async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: 'Server error' });
   }
-});
-
-router.put('/:id', async (req, res) => {
+};
+const updateOrder = async (req, res) => {
   try {
     const order = await Order.findByPk(req.params.id);
     if (!order) {
@@ -44,9 +40,8 @@ router.put('/:id', async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: 'Server error' });
   }
-});
-
-router.delete('/:id',async (req, res) => {
+};
+const deleteOrder = async (req, res) => {
   try {
     const order = await Order.findByPk(req.params.id);
     if (!order) {
@@ -57,6 +52,12 @@ router.delete('/:id',async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: 'Server error' });
   }
-});
+};
 
-module.exports = router;
+module.exports = {
+  getOrders,
+  getOrderById,
+  createOrder,
+  updateOrder,
+  deleteOrder,
+};

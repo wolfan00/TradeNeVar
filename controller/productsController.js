@@ -1,11 +1,7 @@
-const router = require('express').Router();
+const { Op } = require('sequelize');
 const Product = require('../models/Product');
-const { Op } = require("sequelize"); // En üste ekle
 
-const { auth, authAdmin } = require('../middleware/auth');
-
-router.get('/', async (req, res) => {
-  try {
+const getProducts =  async (req,res)=> {try {
     const { category, condition, min, max, q } = req.query;
 
     const where = {};
@@ -31,29 +27,29 @@ router.get('/', async (req, res) => {
     console.error(error);
     res.status(500).json({ message: 'Server error' });
   }
-});
+}
 
-router.get('/:id', async (req, res) => {
-  try {
-    const product = await Product.findByPk(req.params.id);
-    if (!product) {
-      return res.status(404).json({ message: 'Product not found' });
-    }
-    res.status(200).json(product);
-  } catch (error) {
-    res.status(500).json({ message: 'Server error' });
+const getProductById = async (req, res) => {try {
+  const product = await Product.findByPk(req.params.id);
+  if (!product) {
+    return res.status(404).json({ message: 'Product not found' });
   }
-});
+  res.status(200).json(product);
+} catch (error) {
+  res.status(500).json({ message: 'Server error' });
+}
+}
 
-router.post('/', async (req, res) => {
+const createProduct = async (req, res) => {
   try {
-    const { name, description, price, stock, category_id,condition,image,location, } = req.body;
+    const { name, description, price, stock, category_id,condition,image,location,location_x_y } = req.body;
     const newProduct = await Product.create({
       name,
       description,
       price,
       condition,
       image,
+      location_x_y,
       location,
       stock,
       category_id,
@@ -63,9 +59,9 @@ router.post('/', async (req, res) => {
     console.error(error);
     res.status(500).json({ message: 'Server error' });
   }
-});
+}
 
-router.put('/:id', async (req, res) => {
+const updateProduct = async (req, res) => {
   try {
     const product = await Product.findByPk(req.params.id);
     if (!product) {
@@ -76,9 +72,9 @@ router.put('/:id', async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: 'Server error' });
   }
-});
+}
 
-router.delete('/:id', async (req, res) => {
+const deleteProduct = async (req, res) => {
   try {
     const product = await Product.findByPk(req.params.id);
     if (!product) {
@@ -89,6 +85,6 @@ router.delete('/:id', async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: 'Server error' });
   }
-});
+}
 
-module.exports = router;
+module.exports = { getProducts ,getProductById,createProduct,updateProduct,deleteProduct};

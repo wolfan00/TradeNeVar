@@ -1,9 +1,8 @@
-const router = require('express').Router();
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-router.post("/", async (req, res) => {
+const createAccessToken = async (req, res) => {
     try {
         const {email, password } = req.body;
         const user = await User.findOne({where:{ email }});
@@ -33,7 +32,8 @@ router.post("/", async (req, res) => {
         console.log(error);
         res.status(500).json({ message: "Bir hata oluştu!" });
     }
-});
+}
 
-
-module.exports = router;
+module.exports = {
+    createAccessToken
+};

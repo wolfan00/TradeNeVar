@@ -13,14 +13,14 @@ const port = 3000;
 app.use(cookieParser());//cookie okumak için gerekli!
 app.use(express.json());  // JSON verisini okumak için gerekli!
 app.use(express.urlencoded({ extended: true })); // Form verisi için gerekli!
-//ROUTES
-const cart = require('./routes/cart');
-const users = require('./routes/users');
-const signup = require('./routes/signup');
-const login = require('./routes/login');
-const orders = require('./routes/orders');
-const products = require('./routes/products');
-const refresh = require('./routes/refresh');
+//Main routes
+const cart = require('./main_routes/cart');
+const users = require('./main_routes/users');
+const signup = require('./main_routes/signup');
+const login = require('./main_routes/login');
+const orders = require('./main_routes/orders');
+const products = require('./main_routes/products');
+const refresh = require('./main_routes/refresh');
 
 app.use('/api/orders',auth, orders);
 app.use('/api/products',auth, products);

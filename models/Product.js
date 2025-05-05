@@ -28,6 +28,11 @@ const Product = sequelize.define(
       type: DataTypes.STRING(255),
       allowNull: false,
     },
+    location_x_y: {
+      type : DataTypes.ARRAY(DataTypes.FLOAT,DataTypes.FLOAT),
+      allowNull: false,
+    }
+    ,
     location: {
       type: DataTypes.STRING(255),
       allowNull: false,
