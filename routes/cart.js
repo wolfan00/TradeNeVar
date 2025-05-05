@@ -2,7 +2,7 @@ const router = require('express').Router();
 const OrderItem = require('../models/OrderItem.js');
 const {auth,authAdmin} = require('../middleware/auth');
 
-router.get('/',authAdmin, async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const orderItems = await OrderItem.findAll();
     res.status(200).json(orderItems);
@@ -11,7 +11,7 @@ router.get('/',authAdmin, async (req, res) => {
   }
 });
 
-router.get('/:id', auth,async (req, res) => {
+router.get('/:id',async (req, res) => {
   try {
     const orderItem = await OrderItem.findByPk(req.params.id);
     if (!orderItem) {
@@ -23,7 +23,7 @@ router.get('/:id', auth,async (req, res) => {
   }
 });
 
-router.post('/', auth,async (req, res) => {
+router.post('/',async (req, res) => {
   try {
     const { order_id, product_id, quantity, price } = req.body;
     const newOrderItem = await OrderItem.create({
@@ -38,7 +38,7 @@ router.post('/', auth,async (req, res) => {
   }
 });
 
-router.put('/:id',auth, async (req, res) => {
+router.put('/:id', async (req, res) => {
   try {
     const orderItem = await OrderItem.findByPk(req.params.id);
     if (!orderItem) {
@@ -51,7 +51,7 @@ router.put('/:id',auth, async (req, res) => {
   }
 });
 
-router.delete('/:id', auth,async (req, res) => {
+router.delete('/:id',async (req, res) => {
   try {
     const orderItem = await OrderItem.findByPk(req.params.id);
     if (!orderItem) {

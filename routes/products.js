@@ -1,17 +1,39 @@
 const router = require('express').Router();
 const Product = require('../models/Product');
-const {auth,authAdmin} = require('../middleware/auth');
+const { Op } = require("sequelize"); // En üste ekle
 
-router.get('/',auth, async (req, res) => {
+const { auth, authAdmin } = require('../middleware/auth');
+
+router.get('/', async (req, res) => {
   try {
-    const products = await Product.findAll();
+    const { category, condition, min, max, q } = req.query;
+
+    const where = {};
+
+    if (category) where.category_id = category;
+    if (condition) where.condition = condition;
+
+    if (min || max) {
+      where.price = {};
+      if (min) where.price[Op.gte] = parseFloat(min);
+      if (max) where.price[Op.lte] = parseFloat(max);
+    }
+
+    if (q) {
+      where[Op.or] =[ { name: { [Op.like]: `%${q}%` } },
+        { description: { [Op.like]: `%${q}%` } },]
+       ;
+    }
+
+    const products = await Product.findAll({ where });
     res.status(200).json(products);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ message: 'Server error' });
   }
 });
 
-router.get('/:id',auth, async (req, res) => {
+router.get('/:id', async (req, res) => {
   try {
     const product = await Product.findByPk(req.params.id);
     if (!product) {
@@ -23,23 +45,27 @@ router.get('/:id',auth, async (req, res) => {
   }
 });
 
-router.post('/',auth, async (req, res) => {
+router.post('/', async (req, res) => {
   try {
-    const { name, description, price, stock, category_id } = req.body;
+    const { name, description, price, stock, category_id,condition,image,location, } = req.body;
     const newProduct = await Product.create({
       name,
       description,
       price,
+      condition,
+      image,
+      location,
       stock,
       category_id,
     });
     res.status(201).json(newProduct);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ message: 'Server error' });
   }
 });
 
-router.put('/:id', auth,async (req, res) => {
+router.put('/:id', async (req, res) => {
   try {
     const product = await Product.findByPk(req.params.id);
     if (!product) {
@@ -52,7 +78,7 @@ router.put('/:id', auth,async (req, res) => {
   }
 });
 
-router.delete('/:id',auth,async (req, res) => {
+router.delete('/:id', async (req, res) => {
   try {
     const product = await Product.findByPk(req.params.id);
     if (!product) {

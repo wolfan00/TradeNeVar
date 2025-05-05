@@ -3,7 +3,7 @@ const router = require('express').Router();
 const User = require('../models/User');
 const {auth,authAdmin} = require('../middleware/auth');
 
-router.get('/',auth, async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const users = await User.findAll();
     res.status(200).json(users);
@@ -12,7 +12,7 @@ router.get('/',auth, async (req, res) => {
   }
 });
 
-router.get('/:id',auth, async (req, res) => {
+router.get('/:id', async (req, res) => {
   try {
     const user = await User.findByPk(req.params.id);
     if (!user) {
@@ -24,7 +24,7 @@ router.get('/:id',auth, async (req, res) => {
   }
 });
 
-router.post('/', auth,async (req, res) => {
+router.post('/',async (req, res) => {
   const {
     first_name,
     last_name,
@@ -53,7 +53,7 @@ router.post('/', auth,async (req, res) => {
   }
 });
 
-router.put('/:id',auth, async (req, res) => {
+router.put('/:id', async (req, res) => {
   const { first_name, lastname, age, gender, email, password, phone, address } =
     req.body;
 
@@ -80,7 +80,7 @@ router.put('/:id',auth, async (req, res) => {
   }
 });
 
-router.delete('/:id',auth, async (req, res) => {
+router.delete('/:id', async (req, res) => {
   try {
     const user = await User.findByPk(req.params.id);
     if (!user) {

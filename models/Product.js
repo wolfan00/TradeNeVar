@@ -20,6 +20,18 @@ const Product = sequelize.define(
       type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
     },
+    condition:{
+      type: DataTypes.ENUM('New', 'Used'),
+      defaultValue: 'New',
+    },
+    image:{
+      type: DataTypes.STRING(255),
+      allowNull: false,
+    },
+    location: {
+      type: DataTypes.STRING(255),
+      allowNull: false,
+    },
     stock: {
       type: DataTypes.INTEGER,
       allowNull: false,

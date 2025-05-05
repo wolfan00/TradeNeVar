@@ -2,24 +2,42 @@ const jwt = require("jsonwebtoken");
 
 
 const auth = (req, res, next) => {
-    const token = req.header("Authorization");
-    if (!token) return res.status(401).json({ message: "Yetkisiz erişim!" });
+    const refreshToken = req.cookies?.jwt;
 
-    try {
-        const decoded = jwt.verify(token.replace("Bearer ", ""),"SECRET_KEY");   
-        req.user = decoded;
-        next();
-    } catch (error) {
-        res.status(401).json({ message: "Geçersiz token!" });
+    if (!refreshToken) {
+        return res.status(401).json({ message: 'Unauthorized - Token yok' });
     }
+
+    jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => {
+        if (err) {
+            return res.status(403).json({ message: 'Geçersiz token' });
+        }
+
+        req.user = decoded; // { userId, role }
+        next(); // ✅ doğru yerde çağrılıyor
+    });
 };
 // Yetkilendirme: sadece admin erişimi
 const authAdmin = (req, res, next) => {
-    auth(req, res, () => {});
-    if (req.user.role !== 'Admin') {
-        return res.status(403).json({ message: `Bu işlem için admin yetkisi gerekli! Senin rolün:${req.user.role}` });
+    const refreshToken = req.cookies?.jwt;
+
+    if (!refreshToken) {
+        return res.status(401).json({ message: 'Token yok' });
     }
-    next();
+
+    jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => {
+        if (err) {
+            return res.status(403).json({ message: 'Geçersiz token' });
+        }
+
+        if (decoded.role !== 'Admin') {
+            return res.status(403).json({ message: `Bu işlem için admin yetkisi gerekli! Senin rolün: ${decoded.role}` });
+        }
+
+        req.user = decoded;
+        next();
+    });
 };
+
 
 module.exports = {auth,authAdmin};
