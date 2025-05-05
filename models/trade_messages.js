@@ -1,34 +1,28 @@
 import sequelize from './sequelize.js';
 import { DataTypes } from 'sequelize';
 
-const OrderItem = sequelize.define(
-  'order_items',
-  {
+const TradeMessage = sequelize.define('trade_messages', {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    order_id: {
+    trade_offer_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    product_id: {
+    sender_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    quantity: {
-      type: DataTypes.INTEGER,
+    message: {
+      type: DataTypes.STRING(1000),
       allowNull: false,
     },
-    price: {
-      type: DataTypes.DECIMAL(10, 2),
-      allowNull: false,
-    },
-  },
-  {
-    timestamps: false,
-  }
-);
-
-export default OrderItem;
+    sent_at: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
+    }
+  }, { timestamps: false });
+  
+  export default TradeMessage;

@@ -1,7 +1,7 @@
-const { Op } = require('sequelize');
-const Product = require('../models/Product');
+import { Op } from 'sequelize';
+import Product from '../models/Product.js';
 
-const getProducts =  async (req,res)=> {try {
+export const getProducts =  async (req,res)=> {try {
     const { category, condition, min, max, q } = req.query;
 
     const where = {};
@@ -29,7 +29,7 @@ const getProducts =  async (req,res)=> {try {
   }
 }
 
-const getProductById = async (req, res) => {try {
+export const getProductById = async (req, res) => {try {
   const product = await Product.findByPk(req.params.id);
   if (!product) {
     return res.status(404).json({ message: 'Product not found' });
@@ -40,7 +40,7 @@ const getProductById = async (req, res) => {try {
 }
 }
 
-const createProduct = async (req, res) => {
+export const createProduct = async (req, res) => {
   try {
     const { name, description, price, stock, category_id,condition,image,location,location_x_y } = req.body;
     const newProduct = await Product.create({
@@ -61,7 +61,7 @@ const createProduct = async (req, res) => {
   }
 }
 
-const updateProduct = async (req, res) => {
+export const updateProduct = async (req, res) => {
   try {
     const product = await Product.findByPk(req.params.id);
     if (!product) {
@@ -74,7 +74,7 @@ const updateProduct = async (req, res) => {
   }
 }
 
-const deleteProduct = async (req, res) => {
+export const deleteProduct = async (req, res) => {
   try {
     const product = await Product.findByPk(req.params.id);
     if (!product) {
@@ -86,5 +86,3 @@ const deleteProduct = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 }
-
-module.exports = { getProducts ,getProductById,createProduct,updateProduct,deleteProduct};

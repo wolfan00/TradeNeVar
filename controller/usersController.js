@@ -1,6 +1,6 @@
-const User = require('../models/User');
+import User from '../models/User.js';
 
-const getAllUsers =  async (req, res) => {
+export const getAllUsers =  async (req, res) => {
     try {
       const users = await User.findAll();
       res.status(200).json(users);
@@ -9,7 +9,7 @@ const getAllUsers =  async (req, res) => {
     }
   }
 
-  const getUserById = async (req, res) => {
+  export const getUserById = async (req, res) => {
     try {
       const user = await User.findByPk(req.params.id);
       if (!user) {
@@ -20,7 +20,7 @@ const getAllUsers =  async (req, res) => {
       res.status(500).json({ message: 'Server error' });
     }
   }
-  const createUser = async (req, res) => {
+  export const createUser = async (req, res) => {
     const {
       first_name,
       last_name,
@@ -48,7 +48,7 @@ const getAllUsers =  async (req, res) => {
       res.status(400).json({ message: 'Invalid input' });
     }
   }
-  const updateUser =async (req, res) => {
+  export const updateUser =async (req, res) => {
     const { first_name, lastname, age, gender, email, password, phone, address } =
       req.body;
   
@@ -74,7 +74,7 @@ const getAllUsers =  async (req, res) => {
       res.status(400).json({ message: 'Invalid input' });
     }
   }
-  const deleteUser =  async (req, res) => {
+  export const deleteUser =  async (req, res) => {
     try {
       const user = await User.findByPk(req.params.id);
       if (!user) {
@@ -87,11 +87,3 @@ const getAllUsers =  async (req, res) => {
       res.status(500).json({ message: 'Server error' });
     }
   }
-
-  module.exports = {
-    getAllUsers,
-    getUserById,
-    createUser,
-    updateUser,
-    deleteUser,
-  };

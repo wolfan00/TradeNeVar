@@ -1,14 +1,14 @@
-const User = require('../models/User');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+import User from '../models/User.js';
+import { compare } from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
-const createAccessToken = async (req, res) => {
+export const createAccessToken = async (req, res) => {
     try {
         const {email, password } = req.body;
         const user = await User.findOne({where:{ email }});
         if (!user) return res.status(400).json({ message: "Kullanıcı bulunamadı!" });
         
-        const isMatch = await bcrypt.compare(password, user.password);
+        const isMatch = await compare(password, user.password);
         if (!isMatch) return res.status(400).json({ message: "Şifre hatalı!" });
         const accessToken = jwt.sign({ 
             userId: user.getDataValue("id"),
@@ -33,7 +33,3 @@ const createAccessToken = async (req, res) => {
         res.status(500).json({ message: "Bir hata oluştu!" });
     }
 }
-
-module.exports = {
-    createAccessToken
-};

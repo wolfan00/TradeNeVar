@@ -1,7 +1,8 @@
-const router = require('express').Router();
-const { createAccessToken } = require('../controller/loginController');
+import { Router } from 'express';
+const router = Router();
+import { createAccessToken } from '../controller/loginController.js';
 
 router.post("/", createAccessToken);
 
 
-module.exports = router;
+export default router;

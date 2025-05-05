@@ -1,6 +1,6 @@
-const Order = require('../models/Order.js');
+import Order from '../models/Order.js';
 
-const getOrders = async (req, res) => {
+export const getOrders = async (req, res) => {
   try {
     const orders = await Order.findAll();
     res.status(200).json(orders);
@@ -9,7 +9,7 @@ const getOrders = async (req, res) => {
   }
 };
 
-const getOrderById = async (req, res) => {
+export const getOrderById = async (req, res) => {
   try {
     const order = await Order.findByPk(req.params.id);
     if (!order) {
@@ -20,7 +20,7 @@ const getOrderById = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
-const createOrder = async (req, res) => {
+export const createOrder = async (req, res) => {
   try {
     const { user_id, total_price, status } = req.body;
     const newOrder = await Order.create({ user_id, total_price, status });
@@ -29,7 +29,7 @@ const createOrder = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
-const updateOrder = async (req, res) => {
+export const updateOrder = async (req, res) => {
   try {
     const order = await Order.findByPk(req.params.id);
     if (!order) {
@@ -41,7 +41,7 @@ const updateOrder = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
-const deleteOrder = async (req, res) => {
+export const deleteOrder = async (req, res) => {
   try {
     const order = await Order.findByPk(req.params.id);
     if (!order) {
@@ -54,10 +54,4 @@ const deleteOrder = async (req, res) => {
   }
 };
 
-module.exports = {
-  getOrders,
-  getOrderById,
-  createOrder,
-  updateOrder,
-  deleteOrder,
-};
+

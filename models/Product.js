@@ -1,5 +1,5 @@
-const sequelize = require('./sequelize');
-const { DataTypes } = require('sequelize');
+import sequelize from './sequelize.js';
+import { DataTypes } from 'sequelize';
 
 const Product = sequelize.define(
   'products',
@@ -51,4 +51,4 @@ const Product = sequelize.define(
   { timestamps: false }
 );
 
-module.exports = Product;
+export default Product;

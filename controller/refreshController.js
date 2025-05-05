@@ -1,4 +1,4 @@
-const jwt = require('jsonwebtoken');
+import jwt from'jsonwebtoken';
 
 const createRefreshToken = (req, res) => {
   if (req.cookies?.jwt) {
@@ -34,4 +34,4 @@ const createRefreshToken = (req, res) => {
   }
 };
 
-module.exports = { createRefreshToken };
+export default createRefreshToken;

@@ -1,15 +1,18 @@
-const express = require('express');
-const router = express.Router();
-const {auth} = require('../middleware/auth');
+import { Router } from 'express';
+const router = Router();
+import { auth } from '../middleware/auth.js';
 
 //Main routes
-const users = require('./users');
-const cart = require('./cart');
-const signup = require('./signup');
-const login = require('./login');
-const orders = require('./orders');
-const products = require('./products');
-const refresh = require('./refresh');
+import users from './users.js';
+import cart from './cart.js';
+import signup from './signup.js';
+import login from './login.js';
+import orders from './orders.js';
+import products from './products.js';
+import refresh from './refresh.js';
+import offers from './offers.js';
+import offer_messages from './offer_messages.js';
+
 
 router.use('/api/orders',auth, orders);
 router.use('/api/products',auth, products);
@@ -20,4 +23,7 @@ router.use('/api/signup', signup);
 router.use('/api/login', login);
 router.use(`/api/refresh`,refresh);
 
-module.exports = router;
+router.use('/api/offers',auth, offers);
+router.use('/api/offers/:offerId/messages',auth, offer_messages);
+
+export default router;

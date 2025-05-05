@@ -2,6 +2,7 @@
   "name": "nevarmarket",
   "version": "1.0.0",
   "description": "Market App",
+  "type": "module",
   "main": "app.js",
   "scripts": {
     "server:start": "nodemon app.js"
@@ -26,6 +27,9 @@
     "sequelize-cli": "^6.6.2"
   },
   "dependencies": {
+    "@adminjs/express": "^6.1.1",
+    "@adminjs/sequelize": "^4.1.1",
+    "adminjs": "^7.8.15",
     "bcrypt": "^5.1.1",
     "cookie-parser": "^1.4.7",
     "dotenv": "^16.5.0",

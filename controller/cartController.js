@@ -1,6 +1,6 @@
-const OrderItem = require('../models/OrderItem.js');
+import OrderItem from '../models/orderItem.js';
 
-const getOrderItems = async (req, res) => {
+export const getOrderItems = async (req, res) => {
   try {
     const orderItems = await OrderItem.findAll();
     res.status(200).json(orderItems);
@@ -9,7 +9,7 @@ const getOrderItems = async (req, res) => {
   }
 };
 
-const getOrderItemById = async (req, res) => {
+export const getOrderItemById = async (req, res) => {
   try {
     const orderItem = await OrderItem.findByPk(req.params.id);
     if (!orderItem) {
@@ -21,7 +21,7 @@ const getOrderItemById = async (req, res) => {
   }
 };
 
-const createOrderItem = async (req, res) => {
+export const createOrderItem = async (req, res) => {
   try {
     const { order_id, product_id, quantity, price } = req.body;
     const newOrderItem = await OrderItem.create({
@@ -36,7 +36,7 @@ const createOrderItem = async (req, res) => {
   }
 };
 
-const updateOrderItem = async (req, res) => {
+export const updateOrderItem = async (req, res) => {
   try {
     const orderItem = await OrderItem.findByPk(req.params.id);
     if (!orderItem) {
@@ -49,7 +49,7 @@ const updateOrderItem = async (req, res) => {
   }
 };
 
-const deleteOrderItem = async (req, res) => {
+export const deleteOrderItem = async (req, res) => {
   try {
     const orderItem = await OrderItem.findByPk(req.params.id);
     if (!orderItem) {
@@ -62,10 +62,3 @@ const deleteOrderItem = async (req, res) => {
   }
 };
 
-module.exports = {
-  getOrderItems,
-  getOrderItemById,
-  createOrderItem,
-  updateOrderItem,
-  deleteOrderItem,
-};
