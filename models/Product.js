@@ -29,7 +29,7 @@ const Product = sequelize.define(
       allowNull: false,
     },
     location_x_y: {
-      type : DataTypes.ARRAY(DataTypes.FLOAT,DataTypes.FLOAT),
+      type : DataTypes.JSON(),
       allowNull: false,
     }
     ,
