@@ -16,6 +16,6 @@ app.use(urlencoded({ extended: true })); // Form verisi için gerekli!
 app.use("/",mainRoutes);// routes all Main routes
 
 app.listen(port, () => {
-  console.log(`App listening on port ${port}`);
-  console.log(`AdminJS: http://localhost:3000${adminJs.options.rootPath}`);
+  console.log(`AdminJS: http://localhost:${port}${adminJs.options.rootPath}`);//admin paneli girişi
+  console.log(`Server is running on http://localhost:${port}/`);//server girişi
 })

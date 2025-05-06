@@ -2,7 +2,7 @@ import AdminJS from 'adminjs'
 import AdminJSExpress from '@adminjs/express'
 import AdminJSSequelize from '@adminjs/sequelize'
 
-import sequelize from './models/sequelize.js' // <-- parantez değil, düz import + .js uzantısı
+import sequelize from './models/sequelize.js' 
 
 AdminJS.registerAdapter(AdminJSSequelize)
 
@@ -21,4 +21,4 @@ const adminRouter = AdminJSExpress.buildAuthenticatedRouter(adminJs, {
   cookiePassword: 'session-secret',
 })
 
-export { adminJs, adminRouter } // <-- module.exports değil artık
+export { adminJs, adminRouter }
