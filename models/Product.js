@@ -1,8 +1,7 @@
-import sequelize from './sequelize.js';
-import { DataTypes } from 'sequelize';
+export default (sequelize, DataTypes) => {
 
 const Product = sequelize.define(
-  'products',
+  'Product',
   {
     id: {
       type: DataTypes.INTEGER,
@@ -44,11 +43,29 @@ const Product = sequelize.define(
     category_id: {
       type: DataTypes.INTEGER,
     },
-    created_at: {
-      type: DataTypes.DATE,
-    },
   },
-  { timestamps: false }
+  { tableName: 'products',
+    timestamps: true,
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
+}
 );
 
-export default Product;
+Product.associate = models => {
+  Product.hasMany(models.TradeOffer, {
+    foreignKey: 'offered_product_id',
+    as: 'offers_made'
+  });
+  
+  Product.hasMany(models.TradeOffer, {
+    foreignKey: 'requested_product_id',
+    as: 'offers_received'
+  });
+  
+  Product.belongsTo(models.Category, {
+    foreignKey: 'category_id',
+    as: 'category'
+  });
+}
+return Product;
+}

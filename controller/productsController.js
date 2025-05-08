@@ -1,5 +1,7 @@
 import { Op } from 'sequelize';
-import Product from '../models/Product.js';
+import db from '../models/index.js';
+
+const { Product } = db;
 
 export const getProducts =  async (req,res)=> {try {
     const { category, condition, min, max, q } = req.query;

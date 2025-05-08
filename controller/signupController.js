@@ -1,5 +1,7 @@
-import User from'../models/User.js';
+import db from '../models/index.js';
 import bcrypt from 'bcrypt';
+
+const { User } = db;
 
 const signUpUser = async (req, res) => {
     try {

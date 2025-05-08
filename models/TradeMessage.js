@@ -1,7 +1,6 @@
-import sequelize from './sequelize.js';
-import { DataTypes } from 'sequelize';
+export default (sequelize, DataTypes) => {
 
-const TradeMessage = sequelize.define('trade_messages', {
+const TradeMessage = sequelize.define('TradeMessage', {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -19,10 +18,11 @@ const TradeMessage = sequelize.define('trade_messages', {
       type: DataTypes.STRING(1000),
       allowNull: false,
     },
-    sent_at: {
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW,
-    }
-  }, { timestamps: false });
+  }, { tableName: 'trade_messages',
+    timestamps: true,
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
+ });
   
-  export default TradeMessage;
+  return TradeMessage;
+}

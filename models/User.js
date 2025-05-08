@@ -1,8 +1,7 @@
-import sequelize from './sequelize.js';
-import { DataTypes } from 'sequelize';
+export default (sequelize, DataTypes) => {
 
 const User = sequelize.define(
-  `users`,
+  `User`,
   {
     id: {
       type: DataTypes.INTEGER,
@@ -42,7 +41,27 @@ const User = sequelize.define(
       defaultValue: 'User',
     },
   },
-  { timestamps: true }
+  { tableName: 'users',
+    timestamps: true,
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
+ }
 );
 
-export default User;
+User.associations = models => {
+  User.hasMany(models.Product, {
+    foreignKey: 'user_id',
+    as: 'products',
+  });
+  User.hasMany(models.TradeOffer, {
+    foreignKey: 'offerer_id',
+    as: 'trade_offers',
+  });
+  User.hasMany(models.TradeMessage, {
+    foreignKey: 'sender_id',
+    as: 'trade_messages',
+  });
+};
+
+return User;
+}

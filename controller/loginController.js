@@ -1,6 +1,8 @@
-import User from '../models/User.js';
+import db from '../models/index.js';
 import { compare } from 'bcrypt';
 import jwt from 'jsonwebtoken';
+
+const { User } = db;
 
 export const createAccessToken = async (req, res) => {
     try {
