@@ -1,5 +1,6 @@
 import express from 'express';
 const router = express.Router();
+import {auth} from '../middleware/auth.js';
 
 import{
   getProducts,
@@ -13,10 +14,10 @@ router.get('/', getProducts);
 
 router.get('/:id', getProductById);
 
-router.post('/', createProduct);
+router.post('/',auth, createProduct);
 
-router.put('/:id', updateProduct);
+router.put('/:id',auth, updateProduct);
 
-router.delete('/:id', deleteProduct);
+router.delete('/:id',auth, deleteProduct);
 
 export default router;

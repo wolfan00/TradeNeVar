@@ -23,6 +23,16 @@ const TradeMessage = sequelize.define('TradeMessage', {
     createdAt: 'created_at',
     updatedAt: 'updated_at',
  });
-  
+ 
+ TradeMessage.associate = models => {
+   TradeMessage.belongsTo(models.TradeOffer, {
+     foreignKey: 'trade_offer_id',
+     as: 'trade_offer',
+   });
+   TradeMessage.belongsTo(models.User, {
+     foreignKey: 'sender_id',
+     as: 'sender',
+   });
+  };
   return TradeMessage;
 }

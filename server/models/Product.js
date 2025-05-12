@@ -25,23 +25,27 @@ const Product = sequelize.define(
     },
     image:{
       type: DataTypes.STRING(255),
-      allowNull: false,
+      allowNull: true,
     },
     location_x_y: {
       type : DataTypes.JSON(),
-      allowNull: false,
+      allowNull: true,
     }
     ,
     location: {
       type: DataTypes.STRING(255),
-      allowNull: false,
+      allowNull: true,
     },
     stock: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
     },
     category_id: {
       type: DataTypes.INTEGER,
+    },
+    owner_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
     },
   },
   { tableName: 'products',
@@ -60,6 +64,11 @@ Product.associate = models => {
   Product.hasMany(models.TradeOffer, {
     foreignKey: 'requested_product_id',
     as: 'offers_received'
+  });
+  
+  Product.belongsTo(models.User, {
+    foreignKey: 'owner_id',
+    as: 'user'
   });
   
   Product.belongsTo(models.Category, {

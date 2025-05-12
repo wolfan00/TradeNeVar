@@ -11,14 +11,6 @@ const adminJs = new AdminJS({
   rootPath: '/admin',
 })
 
-const adminRouter = AdminJSExpress.buildAuthenticatedRouter(adminJs, {
-  authenticate: async (email, password) => {
-    if (email === 'admin@example.com' && password === '123456') {
-      return { email }
-    }
-    return null
-  },
-  cookiePassword: 'session-secret',
-})
+const adminRouter = AdminJSExpress.buildRouter(adminJs)
 
 export { adminJs, adminRouter }

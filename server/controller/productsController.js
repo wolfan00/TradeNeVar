@@ -4,7 +4,7 @@ import db from '../models/index.js';
 const { Product } = db;
 
 export const getProducts =  async (req,res)=> {try {
-    const { category, condition, min, max, q } = req.query;
+    const { category, condition, min, max, q,ownerId } = req.query;
 
     const where = {};
 
@@ -22,7 +22,9 @@ export const getProducts =  async (req,res)=> {try {
         { description: { [Op.like]: `%${q}%` } },]
        ;
     }
-
+    if (ownerId) {
+      where.owner_id = ownerId;
+    }
     const products = await Product.findAll({ where });
     res.status(200).json(products);
   } catch (error) {
@@ -44,24 +46,40 @@ export const getProductById = async (req, res) => {try {
 
 export const createProduct = async (req, res) => {
   try {
-    const { name, description, price, stock, category_id,condition,image,location,location_x_y } = req.body;
+    const {
+      name,
+      description,
+      price,
+      stock,
+      category_id,
+      condition,
+      location,
+      location_x_y,
+      owner_id,
+      image,
+    } = req.body;
+
     const newProduct = await Product.create({
       name,
       description,
       price,
       condition,
-      image,
       location_x_y,
       location,
       stock,
       category_id,
+      owner_id,
+      image,
     });
+
     res.status(201).json(newProduct);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Server error' });
+  } catch (err) {
+    console.error("Ürün oluşturma hatası:", err);
+    res.status(500).json({ message: "Sunucu hatası" });
   }
-}
+};
+
+
 
 export const updateProduct = async (req, res) => {
   try {

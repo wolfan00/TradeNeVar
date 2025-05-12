@@ -5,7 +5,24 @@ const { TradeOffer, Product, User } = db;
 export const createOffer = async (req, res) =>  {
     try {
         const { offered_product_id, requested_product_id, message } = req.body;
-        const userId = req.user.userId; // Kullanıcının kimliğini JWT'den alıyoruz
+        const userId = req.user.id; // Kullanıcının kimliğini JWT'den alıyoruz
+        // Teklif edilen ürünün sahibi mi 
+        const offeredProduct = await Product.findByPk(offered_product_id);
+        if (!offeredProduct) return res.status(404).json({ message: 'Teklif edilen ürün bulunamadı.' });
+        if (offeredProduct.owner_id !== userId) {
+            return res.status(403).json({ message: 'Bu ürünü teklif edemezsiniz.' });
+        }
+        // teklif daha önce yapılmış mı
+        const existingOffer = await TradeOffer.findOne({
+            where: {
+                offered_product_id,
+                requested_product_id,
+              }
+        });
+        if (existingOffer) {
+            return res.status(400).json({ message: 'Bu ürün için zaten bir teklif yapılmış.' });
+        }
+
         // Teklif oluşturma
         const newOffer = await TradeOffer.create({
             offered_product_id,
@@ -28,16 +45,17 @@ try {
       include: [
         {
           model: Product,
-          as: 'fk_requested_product',
-          where: { owner_id: userId }
+          as: 'offered_product',
+          
         },
         {
           model: Product,
-          as: 'fk_offered_product'
+          as: 'requested_product',
+          where: { owner_id: userId }
         },
         {
           model: User,
-          as: 'fk_offerer',
+          as: 'offerer',
           attributes: ['id', 'first_name', 'last_name', 'email']
         }
       ]
@@ -58,8 +76,8 @@ export const getOutgoingOffers = async (req, res) => {
     const offers = await TradeOffer.findAll({
       where: { offerer_id: userId },
       include: [
-        { model: Product, as: 'fk_offered_product' },
-        { model: Product, as: 'fk_requested_product' }
+        { model: Product, as: 'offered_product' },
+        { model: Product, as: 'requested_product' }
       ]
     });
 
@@ -74,9 +92,9 @@ export const getOfferById = async (req, res) => {
   try {
     const offer = await TradeOffer.findByPk(req.params.id, {
       include: [
-        { model: Product, as: 'fk_offered_product' },
-        { model: Product, as: 'fk_requested_product' },
-        { model: User, as: 'fk_offerer', attributes: ['id', 'first_name', 'last_name', 'email'] }
+        { model: Product, as: 'offered_product' },
+        { model: Product, as: 'requested_product' },
+        { model: User, as: 'trade_offers', attributes: ['id', 'first_name', 'last_name', 'email'] }
       ]
     });
 

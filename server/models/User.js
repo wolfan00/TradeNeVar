@@ -50,7 +50,7 @@ const User = sequelize.define(
 
 User.associations = models => {
   User.hasMany(models.Product, {
-    foreignKey: 'user_id',
+    foreignKey: 'owner_id',
     as: 'products',
   });
   User.hasMany(models.TradeOffer, {

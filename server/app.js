@@ -3,14 +3,16 @@ import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import mainRoutes from './routes/mainRoutes.js';
 import { adminJs, adminRouter } from './admin.js';
-import {sequelize} from './models/index.js'; 
-
+import {sequelize} from './models/index.js';
+import path from 'path';
 // Configuring dotenv
 dotenv.config();
 
 const app = express();
-app.use(adminJs.options.rootPath, adminRouter);
 const port = 3000;
+//middle wares
+app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
+
 
 app.use(cookieParser()); //cookie okumak için gerekli!
 app.use(json()); // JSON verisini okumak için gerekli!
@@ -22,11 +24,9 @@ app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}/`); //server girişi
 });
 
-sequelize
-  .authenticate()
-  .then(() => {
-    console.log('Connection has been established successfully.');
-  })
-  .catch((err) => {
-    console.error('Unable to connect to the database:', err);
-  });
+// Syncing the database
+sequelize.sync({ alter: true }).then(() => {
+  console.log('Database & tables created!');
+}).catch((error) => {
+  console.error('Error creating database & tables:', error);
+});
